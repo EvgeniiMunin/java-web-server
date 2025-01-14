@@ -56,6 +56,28 @@
             <artifactId>UserAgentUtils</artifactId>
             <version>1.21</version>
         </dependency>
+
+        <!-- OpenTelemetry -->
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
+            <version>1.32.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk</artifactId>
+            <version>1.32.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
+            <version>1.32.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry.semconv</groupId>
+            <artifactId>opentelemetry-semconv</artifactId>
+            <version>1.21.0-alpha</version>
+        </dependency>
     </dependencies>
 
 </project>

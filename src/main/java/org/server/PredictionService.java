@@ -4,13 +4,31 @@ import ai.onnxruntime.OnnxTensor;
 import ai.onnxruntime.OnnxValue;
 import ai.onnxruntime.OrtException;
 import ai.onnxruntime.OrtSession;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.metrics.DoubleHistogram;
+import io.opentelemetry.api.metrics.DoubleUpDownCounter;
+import io.opentelemetry.api.metrics.LongUpDownCounter;
+import io.opentelemetry.api.metrics.Meter;
 import org.request.InferenceMessage;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class FilterService {
+public class PredictionService {
+
+    Meter meter;
+
+    DoubleHistogram predictionsHistogram;
+
+    public PredictionService(TelemetryConfig telemetryConfig) {
+        meter = telemetryConfig.meter();
+        predictionsHistogram = meter
+                .histogramBuilder("rtb.predictions")
+                .setDescription("Bid prediction values")
+                .build();
+    }
 
     public Map<String, Map<String, Double>> predictBids(
             OnnxModelRunner onnxModelRunner, List<InferenceMessage> inferenceMessages) {
@@ -61,7 +79,7 @@ public class FilterService {
         validateInferenceMessages(inferenceMessages);
 
         return StreamSupport.stream(results.spliterator(), false)
-                .peek(FilterService::validateOnnxTensor)
+                .peek(PredictionService::validateOnnxTensor)
                 .filter(onnxItem -> Objects.equals(onnxItem.getKey(), "probabilities"))
                 .map(Map.Entry::getValue)
                 .map(OnnxTensor.class::cast)
@@ -105,7 +123,9 @@ public class FilterService {
                             "processedProbabilities: " + processedProbabilities + "\n"
             );
 
-            return processProbabilities(probabilities, inferenceMessages);
+            processedProbabilities.forEach(this::recordPredictions);
+
+            return processedProbabilities;
         } catch (OrtException e) {
             throw new RuntimeException("Exception when extracting proba from OnnxTensor: ", e);
         }
@@ -125,10 +145,27 @@ public class FilterService {
             final InferenceMessage message = throttlingMessages.get(i);
             final String impId = message.getAdUnitCode();
             final String bidder = message.getBidder();
-            //final boolean isKeptInAuction = probabilities[i][1] > threshold;
             result.computeIfAbsent(impId, k -> new HashMap<>()).put(bidder, (double) probabilities[i][1]);
         }
 
         return result;
+    }
+
+    public void recordPredictions(String impId, Map<String, Double> predictions) {
+        predictions.forEach((bidder, prediction) -> {
+            predictionsHistogram.record(
+                    prediction,
+                    Attributes.of(
+                            AttributeKey.stringKey("impId"), impId,
+                            AttributeKey.stringKey("bidder"), bidder));
+
+            System.out.println(
+                    "FilterService/recordPredictions \n" +
+                            "impId: " + impId + "\n" +
+                            "bidder: " + bidder + "\n" +
+                            "prediction: " + prediction + "\n" +
+                            "predictionsHistogram: " + predictionsHistogram + "\n"
+            );
+        });
     }
 }

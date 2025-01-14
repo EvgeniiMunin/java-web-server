@@ -31,14 +31,22 @@ public class Application {
                         "inferenceMessages: " + inferenceMessages + "\n"
         );
 
-        final FilterService filterService = new FilterService();
-        final Map<String, Map<String, Double>> predictions = filterService.predictBids(
+        final TelemetryConfig telemetryConfig = new TelemetryConfig();
+        final PredictionService predictionService = new PredictionService(telemetryConfig);
+        final Map<String, Map<String, Double>> predictions = predictionService.predictBids(
                 onnxModelRunner, inferenceMessages);
 
         System.out.println(
                 "Application/main \n" +
                         "predictions: " + predictions + "\n"
         );
+
+        try {
+            Thread.sleep(120_000); // wait 2 minute
+        } catch (InterruptedException e) {
+            // handle
+        }
+
 
         // SpringApplication.run(Application.class, args);
         // Micronaut.run(Application.class, args);
