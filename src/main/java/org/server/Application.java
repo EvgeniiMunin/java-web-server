@@ -3,52 +3,16 @@ package org.server;
 import ai.onnxruntime.OrtException;
 import org.request.BidRequest;
 import org.request.InferenceMessage;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+@SpringBootApplication
 public class Application {
-    public static void main(String[] args) throws IOException, OrtException {
-
-        InferenceDataService inferenceDataService = new InferenceDataService();
-        final BidRequest bidRequest = inferenceDataService.parseBidRequest(
-                "src/main/resources/bid_request2.json");
-
-        final OnnxModelRunner onnxModelRunner = new OnnxModelRunner(
-                "src/main/resources/models_pbuid=test-pbuid.onnx");
-
-        System.out.println(
-                "Application/main \n" +
-                        "onnxModelRunner: " + onnxModelRunner + "\n"
-        );
-
-        final List<InferenceMessage> inferenceMessages = inferenceDataService
-                .extractInferenceMessages(bidRequest);
-
-        System.out.println(
-                "Application/main \n" +
-                        "inferenceMessages: " + inferenceMessages + "\n"
-        );
-
-        final TelemetryConfig telemetryConfig = new TelemetryConfig();
-        final PredictionService predictionService = new PredictionService(telemetryConfig);
-        final Map<String, Map<String, Double>> predictions = predictionService.predictBids(
-                onnxModelRunner, inferenceMessages);
-
-        System.out.println(
-                "Application/main \n" +
-                        "predictions: " + predictions + "\n"
-        );
-
-        try {
-            Thread.sleep(120_000); // wait 2 minute
-        } catch (InterruptedException e) {
-            // handle
-        }
-
-
-        // SpringApplication.run(Application.class, args);
-        // Micronaut.run(Application.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 }
