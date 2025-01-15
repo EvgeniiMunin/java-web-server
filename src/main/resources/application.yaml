@@ -1,5 +1,5 @@
 webapp:
-  modelPath: "src/main/resources/models_pbuid=test-pbuid.onnx"
+  modelPath: "/app/models/model.onnx"
 
 server:
   port: 8080

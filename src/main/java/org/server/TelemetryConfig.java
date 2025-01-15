@@ -28,7 +28,7 @@ public class TelemetryConfig {
                 .setResource(resource)
                 .registerMetricReader(PeriodicMetricReader.builder(
                                 OtlpHttpMetricExporter.builder()
-                                        .setEndpoint("http://localhost:4318/v1/metrics")
+                                        .setEndpoint("http://otel-collector:4318/v1/metrics")
                                         .build())
                         .build())
                 .build();

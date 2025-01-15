@@ -1,0 +1,40 @@
+{
+  "id": "1",
+  "imp": [
+    {
+      "id": "pub_banniere_haute",
+      "ext": {
+        "prebid": {
+          "bidder": {
+            "rubicon": {
+              "accountId": 1001,
+              "siteId": 267318,
+              "zoneId": 1861698
+            },
+            "appnexus": {
+              "placementId": 123456
+            }
+          }
+        }
+      },
+      "banner": {
+        "format": [
+          {
+            "w": 300,
+            "h": 250
+          },
+          {
+            "w": 300,
+            "h": 600
+          }
+        ]
+      }
+    }
+  ],
+  "site": {
+    "publisher": {
+      "id": "1001"
+    },
+    "page": "http://example.com/prebid_server_test.html"
+  }
+}
