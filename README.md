@@ -15,7 +15,7 @@ The above services are also initialized and ready to use.
 
 
 ### BidRequest schema
-The `BidRequest` class represents the schema provided with the RTB bid request `.json` payload. The example of this schema can be seen as follows:
+The `BidRequest` class represents the schema after the deserialization of the standard OpenRTB bid request `.json` payload. The example of this schema can be seen as follows:
 
 ```json
 {
