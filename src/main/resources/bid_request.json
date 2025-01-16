@@ -1,0 +1,209 @@
+{
+  "id": "1",
+  "source": {
+    "tid": "7b3e93dc-10cc-42cd-b855-76ddea2e3f7d"
+  },
+  "tmax": 1000,
+  "imp": [
+    {
+      "id": "pub_banniere_haute",
+      "ext": {
+        "prebid": {
+          "bidder": {
+            "rubicon": {
+              "accountId": 1001,
+              "siteId": 267318,
+              "zoneId": 1861698
+            },
+            "appnexus": {
+              "placementId": 123456
+            },
+            "pubmatic": {
+              "publisherId": "156209",
+              "adSlot": "slot1@300x250"
+            },
+            "improvedigital": {"placementId": 123456},
+            "teads": {"placementId": 123456}
+          }
+        }
+      },
+      "secure": 1,
+      "banner": {
+        "format": [
+          {
+            "w": 300,
+            "h": 250
+          },
+          {
+            "w": 300,
+            "h": 600
+          },
+          {
+            "w": 320,
+            "h": 480
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "pub_native_web_atf1",
+      "ext": {
+        "prebid": {
+          "bidder": {
+            "rubicon": {
+              "accountId": 1001,
+              "siteId": 267318,
+              "zoneId": 1861698
+            },
+            "appnexus": {
+              "placementId": 123456
+            },
+            "pubmatic": {
+              "publisherId": "156209",
+              "adSlot": "slot1@300x250"
+            },
+            "improvedigital": {"placementId": 123456},
+            "teads": {"placementId": 123456}
+          }
+        }
+      },
+      "secure": 1,
+      "banner": {
+        "format": [
+          {
+            "w": 300,
+            "h": 250
+          },
+          {
+            "w": 300,
+            "h": 600
+          },
+          {
+            "w": 320,
+            "h": 480
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "pub_banniere_haute_native",
+      "ext": {
+        "prebid": {
+          "bidder": {
+            "rubicon": {
+              "accountId": 1001,
+              "siteId": 267318,
+              "zoneId": 1861698
+            },
+            "appnexus": {
+              "placementId": 123456
+            },
+            "pubmatic": {
+              "publisherId": "156209",
+              "adSlot": "slot1@300x250"
+            },
+            "improvedigital": {"placementId": 123456},
+            "teads": {"placementId": 123456}
+          }
+        }
+      },
+      "secure": 1,
+      "native": {
+        "request": "{\"ver\":\"1.2\",\"assets\":[{\"id\":1,\"required\":1,\"title\":{\"len\":80}},{\"id\":2,\"required\":1,\"img\":{\"type\":3,\"wmin\":120,\"hmin\":80}},{\"id\":3,\"required\":1,\"data\":{\"type\":1}},{\"id\":4,\"required\":1,\"data\":{\"type\":2}}],\"eventtrackers\":[{\"event\":1,\"methods\":[1,2]}]}",
+        "body": {
+          "sendId": true
+        },
+        "clickUrl": {
+          "sendId": true
+        },
+        "title": {
+          "sendId": true
+        },
+        "sponsoredBy": {
+          "sendId": true
+        },
+        "image": {
+          "sendId": true,
+          "required": true,
+          "type": 3,
+          "wmin": 120,
+          "hmin": 80
+        },
+        "cta": {
+          "sendId": true
+        }
+      }
+    },
+
+    {
+      "id": "pub_native_web_atf1_native",
+      "ext": {
+        "prebid": {
+          "bidder": {
+            "rubicon": {
+              "accountId": 1001,
+              "siteId": 267318,
+              "zoneId": 1861698
+            },
+            "appnexus": {
+              "placementId": 123456
+            },
+            "pubmatic": {
+              "publisherId": "156209",
+              "adSlot": "slot1@300x250"
+            },
+            "improvedigital": {"placementId": 123456},
+            "teads": {"placementId": 123456}
+          }
+        }
+      },
+      "secure": 1,
+      "native": {
+        "request": "{\"ver\":\"1.2\",\"assets\":[{\"id\":1,\"required\":1,\"title\":{\"len\":80}},{\"id\":2,\"required\":1,\"img\":{\"type\":3,\"wmin\":120,\"hmin\":80}},{\"id\":3,\"required\":1,\"data\":{\"type\":1}},{\"id\":4,\"required\":1,\"data\":{\"type\":2}}],\"eventtrackers\":[{\"event\":1,\"methods\":[1,2]}]}",
+        "body": {
+          "sendId": true
+        },
+        "clickUrl": {
+          "sendId": true
+        },
+        "title": {
+          "sendId": true
+        },
+        "sponsoredBy": {
+          "sendId": true
+        },
+        "image": {
+          "sendId": true,
+          "required": true,
+          "type": 3,
+          "wmin": 120,
+          "hmin": 80
+        },
+        "cta": {
+          "sendId": true
+        }
+      }
+    }
+
+
+  ],
+
+  "test": 1,
+  "site": {
+    "publisher": {
+      "id": "1001"
+    },
+    "page": "http://example.com/prebid_server_test.html"
+  },
+  "ext": {
+    "prebid": {
+      "trace": "verbose",
+      "targeting": {
+        "includewinners": true,
+        "includebidderkeys": true
+      }
+    }
+  }
+}
