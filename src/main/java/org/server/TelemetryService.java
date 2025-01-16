@@ -4,14 +4,13 @@ import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.exporter.otlp.http.metrics.OtlpHttpMetricExporter;
-import io.opentelemetry.exporter.otlp.metrics.OtlpGrpcMetricExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.ResourceAttributes;
 
-public class TelemetryConfig {
+public class TelemetryService {
 
     Resource resource;
 
@@ -19,7 +18,7 @@ public class TelemetryConfig {
 
     OpenTelemetry openTelemetry;
 
-    public TelemetryConfig() {
+    public TelemetryService(String OtlpHttpMetricExporterEndpoint) {
         resource = Resource.getDefault()
                 .merge(Resource.create(Attributes.of(
                         ResourceAttributes.SERVICE_NAME, "rtb-prediction-service")));
@@ -28,7 +27,7 @@ public class TelemetryConfig {
                 .setResource(resource)
                 .registerMetricReader(PeriodicMetricReader.builder(
                                 OtlpHttpMetricExporter.builder()
-                                        .setEndpoint("http://otel-collector:4318/v1/metrics")
+                                        .setEndpoint(OtlpHttpMetricExporterEndpoint)
                                         .build())
                         .build())
                 .build();

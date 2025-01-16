@@ -7,8 +7,6 @@ import ai.onnxruntime.OrtSession;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.DoubleHistogram;
-import io.opentelemetry.api.metrics.DoubleUpDownCounter;
-import io.opentelemetry.api.metrics.LongUpDownCounter;
 import io.opentelemetry.api.metrics.Meter;
 import org.request.InferenceMessage;
 
@@ -22,8 +20,8 @@ public class PredictionService {
 
     DoubleHistogram predictionsHistogram;
 
-    public PredictionService(TelemetryConfig telemetryConfig) {
-        meter = telemetryConfig.meter();
+    public PredictionService(TelemetryService telemetryService) {
+        meter = telemetryService.meter();
         predictionsHistogram = meter
                 .histogramBuilder("rtb.predictions")
                 .setDescription("Bid prediction values")
@@ -32,25 +30,17 @@ public class PredictionService {
 
     public Map<String, Map<String, Double>> predictBids(
             OnnxModelRunner onnxModelRunner, List<InferenceMessage> inferenceMessages) {
+        long startMillis = System.nanoTime();
         final OrtSession.Result results;
         try {
             final String[][] inferenceRows = convertToArray(inferenceMessages);
-
-            System.out.println(
-                    "FilterService/predictBids \n" +
-                            "inferenceRows: " + Arrays.deepToString(inferenceRows) + "\n"
-            );
-
             results = onnxModelRunner.runModel(inferenceRows);
-
-            System.out.println(
-                    "FilterService/predictBids \n" +
-                            "results: " + results + "\n"
-            );
-
             return processModelResults(results, inferenceMessages);
         } catch (OrtException e) {
             throw new RuntimeException("Exception during model inference: ", e);
+        } finally {
+            long endMillis = System.nanoTime();
+            double durationMillis = (endMillis - startMillis) / 1000000.0;
         }
     }
 
@@ -117,12 +107,6 @@ public class PredictionService {
         try {
             final float[][] probabilities = extractProbabilitiesValues(tensor);
             Map<String, Map<String, Double>> processedProbabilities = processProbabilities(probabilities, inferenceMessages);
-
-            System.out.println(
-                    "FilterService/extractAndProcessProbabilities \n" +
-                            "processedProbabilities: " + processedProbabilities + "\n"
-            );
-
             processedProbabilities.forEach(this::recordPredictions);
 
             return processedProbabilities;
@@ -158,14 +142,6 @@ public class PredictionService {
                     Attributes.of(
                             AttributeKey.stringKey("impId"), impId,
                             AttributeKey.stringKey("bidder"), bidder));
-
-            System.out.println(
-                    "FilterService/recordPredictions \n" +
-                            "impId: " + impId + "\n" +
-                            "bidder: " + bidder + "\n" +
-                            "prediction: " + prediction + "\n" +
-                            "predictionsHistogram: " + predictionsHistogram + "\n"
-            );
         });
     }
 }

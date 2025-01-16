@@ -1,6 +1,9 @@
 webapp:
   modelPath: "/app/models/model.onnx"
 
+otel-collector:
+  endpoint: "http://otel-collector:4318/v1/traces"
+
 server:
   port: 8080
 

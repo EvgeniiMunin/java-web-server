@@ -11,6 +11,9 @@ public class ServiceConfiguration {
     @Value("${webapp.modelPath}")
     private String modelPath;
 
+    @Value("${otel-collector.endpoint}")
+    private String OtlpHttpMetricExporterEndpoint;
+
     @Bean
     public InferenceDataService inferenceDataService() {
         return new InferenceDataService();
@@ -18,28 +21,16 @@ public class ServiceConfiguration {
 
     @Bean
     public OnnxModelRunner onnxModelRunner() throws OrtException {
-
-        System.out.println(
-                "ServiceConfiguration/onnxModelRunner \n" +
-                        "modelPath: " + modelPath + "\n"
-        );
-
         return new OnnxModelRunner(modelPath);
     }
 
     @Bean
-    public TelemetryConfig telemetryConfig() {
-        return new TelemetryConfig();
+    public TelemetryService telemetryService(String OtlpHttpMetricExporterEndpoint) {
+        return new TelemetryService(OtlpHttpMetricExporterEndpoint);
     }
 
     @Bean
-    public PredictionService predictionService(TelemetryConfig telemetryConfig) {
-
-        System.out.println(
-                "ServiceConfiguration/predictionService \n" +
-                        "telemetryConfig: " + telemetryConfig + "\n"
-        );
-
-        return new PredictionService(telemetryConfig);
+    public PredictionService predictionService(TelemetryService telemetryService) {
+        return new PredictionService(telemetryService);
     }
 }

@@ -52,16 +52,12 @@ public class InferenceDataServiceTest {
     }
 
     private BidRequest givenBidRequest() {
-        // Banner formats
         Format format1 = Format.builder().w(300).h(250).build();
         Format format2 = Format.builder().w(300).h(600).build();
         Banner banner = Banner.builder()
                 .format(Arrays.asList(format1, format2))
                 .build();
 
-        // Build ext with "prebid.bidder.rubicon" and "prebid.bidder.appnexus"
-        // Typically, 'ext' is a JSON tree. We'll use Jackson's ObjectNode for simplicity:
-        // something like: { "prebid": { "bidder": { "rubicon": {...}, "appnexus": {...} } } }
         var extNode = mapper.createObjectNode();
         var prebidNode = extNode.putObject("prebid");
         var bidderNode = prebidNode.putObject("bidder");
@@ -74,14 +70,12 @@ public class InferenceDataServiceTest {
         var appnexusNode = bidderNode.putObject("appnexus");
         appnexusNode.put("placementId", 123456);
 
-        // Now the Imp
         Imp imp = Imp.builder()
                 .id("pub_banniere_haute")
-                .ext(extNode)   // Attach that JSON
+                .ext(extNode)
                 .banner(banner)
                 .build();
 
-        // Publisher and Site
         Publisher publisher = Publisher.builder()
                 .id("1001")
                 .build();
@@ -91,7 +85,6 @@ public class InferenceDataServiceTest {
                 .page("http://example.com/prebid_server_test.html")
                 .build();
 
-        // Finally the BidRequest
         return BidRequest.builder()
                 .id("1")
                 .imp(Arrays.asList(imp))
@@ -104,7 +97,6 @@ public class InferenceDataServiceTest {
                 .bidder("rubicon")
                 .adUnitCode("pub_banniere_haute")
                 .hostname("http://example.com/prebid_server_test.html")
-                // hourBucket and minuteQuadrant are dynamic, so we won't set them
                 .build();
 
         InferenceMessage appnexusMsg = InferenceMessage.builder()

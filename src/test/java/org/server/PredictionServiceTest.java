@@ -24,8 +24,7 @@ public class PredictionServiceTest {
     }
 
     @Test
-    @DisplayName("predictBids() should return valid probas map when OnnxModelRunner returns data")
-    void predictBidsShouldReturnValidProbasMap() throws OrtException {
+    void predictBidsShouldReturnValidProbabilitiesMap() throws OrtException {
         // given
         final List<InferenceMessage> inferenceMessages = givenInferenceMessages();
         final OnnxModelRunner onnxModelRunner = givenOnnxModelRunner();
@@ -33,18 +32,12 @@ public class PredictionServiceTest {
         // when
         final var result = target.predictBids(onnxModelRunner, inferenceMessages);
 
-        System.out.println(
-                "PredictionServiceTest/predictBidsShouldReturnValidProbasMap \n" +
-                        "result: " + result + "\n"
-        );
-
         // then
         assertEquals(0.3, result.get("impId_1").get("bidderA"), 1e-5);
     }
 
     @Test
-    @DisplayName("predictBids() should throw RuntimeException if inferenceMessages is null or empty")
-    void testPredictBidsEmptyMessages() {
+    void predictBidsShouldFailForEmptyMessages() {
         assertThrows(RuntimeException.class, () ->
                 target.predictBids(onnxModelRunnerMock, null)
         );
@@ -67,6 +60,6 @@ public class PredictionServiceTest {
                 .minuteQuadrant("1")
                 .build();
 
-        return Arrays.asList(inferenceMessage);
+        return Collections.singletonList(inferenceMessage);
     }
 }

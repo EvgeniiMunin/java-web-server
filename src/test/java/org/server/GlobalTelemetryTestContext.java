@@ -2,9 +2,10 @@ package org.server;
 
 public class GlobalTelemetryTestContext {
 
-    private static final TelemetryConfig TELEMETRY_CONFIG = new TelemetryConfig();
+    private static final TelemetryService TELEMETRY_CONFIG = new TelemetryService(
+            "http://otel-collector:4318/v1/traces");
 
-    public static TelemetryConfig getTelemetryConfig() {
+    public static TelemetryService getTelemetryConfig() {
         return TELEMETRY_CONFIG;
     }
 }

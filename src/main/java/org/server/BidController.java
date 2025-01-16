@@ -37,19 +37,8 @@ public class BidController {
 
     @PostMapping("/bid")
     public ResponseEntity<?> bid(@RequestBody BidRequest bidRequest) {
-
-        System.out.println(
-                "BidController/bid \n" +
-                        "bidRequest: " + bidRequest + "\n"
-        );
-
         final List<InferenceMessage> inferenceMessages = inferenceDataService
                 .extractInferenceMessages(bidRequest);
-
-        System.out.println(
-                "BidController/bid \n" +
-                        "inferenceMessages: " + inferenceMessages + "\n"
-        );
 
         final Map<String, Map<String, Double>> predictions = predictionService.predictBids(
                 onnxModelRunner, inferenceMessages);

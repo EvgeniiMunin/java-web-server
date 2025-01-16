@@ -5,7 +5,6 @@ import ai.onnxruntime.OrtEnvironment;
 import ai.onnxruntime.OrtException;
 import ai.onnxruntime.OrtSession;
 
-import java.util.Collection;
 import java.util.Collections;
 
 public class OnnxModelRunner {

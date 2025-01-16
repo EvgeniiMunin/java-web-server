@@ -24,14 +24,7 @@ public class InferenceDataService {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public BidRequest parseBidRequest(String filePath) throws IOException {
-        final BidRequest bidRequest = objectMapper.readValue(new File(filePath), BidRequest.class);
-
-        System.out.println(
-                "Ortb2RequestFactory/parseBidRequest \n" +
-                        "bidRequest: " + bidRequest + "\n"
-        );
-
-        return bidRequest;
+        return objectMapper.readValue(new File(filePath), BidRequest.class);
     }
 
     public List<InferenceMessage> extractInferenceMessages(BidRequest bidRequest) {
@@ -45,7 +38,6 @@ public class InferenceDataService {
         return imps.stream()
                 .map(imp -> extractMessagesForImp(
                         imp,
-                        bidRequest,
                         hostname,
                         hourBucket,
                         minuteQuadrant))
@@ -55,7 +47,6 @@ public class InferenceDataService {
 
     private List<InferenceMessage> extractMessagesForImp(
             Imp imp,
-            BidRequest bidRequest,
             String hostname,
             Integer hourBucket,
             Integer minuteQuadrant) {
