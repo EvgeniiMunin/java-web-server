@@ -4,13 +4,14 @@
 [Spring Boot](https://spring.io/projects/spring-boot) application that provides predictions of bids on the bid requests. The project is built using [Maven](https://maven.apache.org/) and Java 17.
 
 ### Dependency Injection
-`ServiceConfiguration` configures Spring dependencies as beans:
+`ServiceConfiguration` configures Spring dependencies as beans for the following classes:
 - `InferenceDataService` - service that parses the bid request `.json` and flattens it to `InferenceMessage` feature set
 - `OnnxModelRunner` - service that launches the [ONNX](https://onnx.ai/) model
 - `TelemetryService` - service that defines `OtlpHttpMetricExporter`
 - `PredictionService` - service that executes predictions using `OnnxModelRunner` and processes output probabilities
 
-The dependency injection is done at the `Application` start up. At this moment the ONNX model is loaded into the memory. The above services are also initialized and ready to use.
+The dependency injection is done at the `Application` start up. At this moment the ONNX model is loaded into the memory. 
+The above services are also initialized and ready to use.
 
 
 ### BidRequest schema
