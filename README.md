@@ -6,7 +6,7 @@
 ### Dependency Injection
 `ServiceConfiguration` configures Spring dependencies as beans for the following classes:
 - `InferenceDataService` - service that parses the bid request `.json` and flattens it to `InferenceMessage` feature set
-- `OnnxModelRunner` - service that launches the [ONNX](https://onnx.ai/) model
+- `OnnxModelRunner` - service that fetches and launches the trained [ONNX](https://onnx.ai/) model
 - `TelemetryService` - service that defines `OtlpHttpMetricExporter`
 - `PredictionService` - service that executes predictions using `OnnxModelRunner` and processes output probabilities
 
